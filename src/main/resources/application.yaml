@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: gus-remotesales
+  jpa:
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 15
+      auto-commit: true
+      idle-timeout: 30000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+  data:
+    redis:
+      database: ${REDIS_DATABASE}
+      password: ${REDIS_PASSWORD}
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      client-type: lettuce
+      client-name: ${spring.application.name}
+
+gus:
+  remotesales:
+    aes-key: ${REMOTESALES_AES_KEY}
+    expires-in: ${REMOTESALES_TOKEN_EXPIRE:7200}
+    refresh-expires-in: ${REMOTESALES_REFRESH_TOKEN_EXPIRE:2592000}
+    private-key: ${REMOTESALES_TOKEN_PRIVATE_KEY}
+    iss: ${REMOTESALES_TOKEN_ISS:${spring.application.name}}
