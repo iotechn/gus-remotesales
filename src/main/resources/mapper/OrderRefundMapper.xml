@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dobbinsoft.gus.remotesales.mapper.OrderRefundMapper">
+
+    <select id="getSystemRefundOrderList" resultType="com.dobbinsoft.gus.remotesales.data.vo.SystemRefundOrderVO">
+        select
+        orr.id,
+        orr.order_no,
+        orr.order_id,
+        orr.refund_no,
+        orr.creator_wwid,
+        orr.creator_name,
+        orr.refund_create_time,
+        orr.refund_amount,
+        orr.refund_comment,
+        orr.refund_status,
+        orr.approve_status,
+        orr.approve_time,
+        orr.approve_comment,
+        orr.refund_time,
+        orr.query_id,
+        orr.original_no,
+        orr.approve_id,
+        orr.approve_name,
+        orr.fail_comment,
+        orr.created_by,
+        orr.modified_by,
+        orr.modified_date,
+        orr.deleted,
+        orr.version,
+        orr.tenant_id,
+        ord.created_date as orderCreateTime,
+        ord.xstore_id,
+        orr.attachments,
+        ord.store_name,
+        ord.customer_nickname ,
+        ord.pos_number,
+        '原路退回' as pay_method,
+        ord.receipt_number,
+        ord.ca_name,
+        ord.ca_wwid,
+        ord.pay_amount - COALESCE(SUM(IF( orr.approve_status=2,orr.refund_amount,0)) OVER (
+        PARTITION BY orr.order_id
+        ORDER BY orr.created_date
+        ROWS BETWEEN UNBOUNDED PRECEDING AND 0 PRECEDING
+        ), 0) AS remaining_amount
+        FROM rs_order_refund orr
+        INNER JOIN rs_order ord ON (orr.order_id=ord.id
+        <if test="params.orderStatus !=null">
+            AND order_id in (select id from rs_order where status= #{params.orderStatus})
+        </if>
+        )
+        <where>
+            <if test="params.refundStatus !=null">
+                AND refund_status =#{params.refundStatus}
+            </if>
+            <if test="params.approveStatus !=null">
+                AND approve_status =#{params.approveStatus}
+            </if>
+        </where>
+        ORDER BY
+            orr.id
+        DESC
+
+    </select>
+
+</mapper>

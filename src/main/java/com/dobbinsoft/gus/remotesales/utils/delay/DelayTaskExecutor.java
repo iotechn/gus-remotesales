@@ -38,7 +38,6 @@ public class DelayTaskExecutor {
      */
     public void start() {
         executorService.submit(this::processDelayTasks);
-        log.info("延迟任务执行器已启动");
     }
     
     /**
@@ -46,7 +45,6 @@ public class DelayTaskExecutor {
      */
     public void stop() {
         executorService.shutdown();
-        log.info("延迟任务执行器已停止");
     }
     
     /**

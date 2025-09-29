@@ -2,12 +2,12 @@
 //
 //import com.dobbinsoft.gus.web.vo.R;
 //import com.icbc.api.IcbcApiException;
-//import com.kering.cus.lib.common.PlatformHeaders;
-//import com.kering.cus.lib.common.context.GenericRequestContextHolder;
-//import com.kering.cus.lib.common.context.bo.IdentityContext;
-//import com.kering.cus.lib.common.context.bo.RequestProperty;
-//import com.kering.cus.lib.common.context.bo.TenantContext;
-//import com.kering.cus.lib.common.context.bo.TraceContext;
+//import com.dobbinsoft.gus.lib.common.PlatformHeaders;
+//import com.dobbinsoft.gus.lib.common.context.GenericRequestContextHolder;
+//import com.dobbinsoft.gus.lib.common.context.bo.IdentityContext;
+//import com.dobbinsoft.gus.lib.common.context.bo.RequestProperty;
+//import com.dobbinsoft.gus.lib.common.context.bo.TenantContext;
+//import com.dobbinsoft.gus.lib.common.context.bo.TraceContext;
 //import com.dobbinsoft.gus.remotesales.client.icbc.vo.Notify;
 //import com.dobbinsoft.gus.remotesales.data.vo.icbc.IcbcResponseVo;
 //import com.dobbinsoft.gus.remotesales.service.ICBCCallBackService;
