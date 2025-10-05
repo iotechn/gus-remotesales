@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @EnableFeignClients
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.dobbinsoft.gus.remotesales")
 @MapperScan("com.dobbinsoft.gus.remotesales.mapper")
 public class GusRemotesalesApplication {
 
