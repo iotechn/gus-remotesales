@@ -1,13 +1,11 @@
 package com.dobbinsoft.gus.remotesales.controller.wecom;
 
-import com.dobbinsoft.gus.remotesales.data.dto.auth.WecomAuthDTO;
 import com.dobbinsoft.gus.remotesales.data.dto.session.WecomSessionInfoDTO;
 import com.dobbinsoft.gus.remotesales.data.vo.JSSDKConfigVo;
 import com.dobbinsoft.gus.remotesales.service.WecomAuthService;
 import com.dobbinsoft.gus.web.vo.R;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,12 +19,6 @@ import java.util.List;
 public class WecomAuthController {
     @Autowired
     WecomAuthService wecomAuthService;
-
-    @PostMapping("/wecom-login")
-    @Operation(summary = "企业微信登录OAuth")
-    public R<WecomSessionInfoDTO> login(@Valid @RequestBody WecomAuthDTO wecomAuthDTO) {
-        return R.success(wecomAuthService.login(wecomAuthDTO));
-    }
 
     @GetMapping(value = "/get-jsapi-info")
     @Operation(summary = "获取WecomTicket")
