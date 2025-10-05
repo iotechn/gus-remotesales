@@ -1,4 +1,4 @@
-package com.dobbinsoft.gus.permission.configuration;
+package com.dobbinsoft.gus.remotesales.configuration;
 
 import io.swagger.v3.oas.models.Paths;
 import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
