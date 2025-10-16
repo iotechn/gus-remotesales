@@ -26,11 +26,7 @@ public class WxPKCS7Encoder {
 		int amountToPad = BLOCK_SIZE - (count % BLOCK_SIZE);
         // 获得补位所用的字符
 		char padChr = chr(amountToPad);
-		String tmp = new String();
-		for (int index = 0; index < amountToPad; index++) {
-			tmp += padChr;
-		}
-		return tmp.getBytes(CHARSET);
+        return String.valueOf(padChr).repeat(amountToPad).getBytes(CHARSET);
 	}
  
 	/**
