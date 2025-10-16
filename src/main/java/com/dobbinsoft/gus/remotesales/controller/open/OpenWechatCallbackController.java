@@ -15,9 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-
 @Slf4j
 @RestController
 @RequestMapping("/open/wechat-callback")
@@ -36,11 +33,10 @@ public class OpenWechatCallbackController {
                             HttpServletRequest request) {
         log.info("[wechat callback] url validate: request_param: {}", JsonUtil.convertToString(request.getParameterMap()));
         ConfigContentVO configContentVO = configCenterClient.getBrandAllConfigContent();
-        String decodedEchostr = URLDecoder.decode(echostr, StandardCharsets.UTF_8);
         ConfigContentVO.Secret secret = configContentVO.getSecret();
         try {
             WXBizMsgCrypt wxBizMsgCrypt = new WXBizMsgCrypt(secret.getWechatToken(), secret.getWechatAesKey(), secret.getWechatAppId());
-            return wxBizMsgCrypt.verifyURL(signature, timestamp, nonce, decodedEchostr);
+            return wxBizMsgCrypt.verifyURL(signature, timestamp, nonce, echostr);
         } catch (AesException e) {
             return e.getMessage();
         }
