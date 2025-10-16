@@ -50,6 +50,8 @@ public class ConfigContentVO {
     public static class Secret {
         private String wechatAppId;
         private String wechatAppSecret;
+        private String wechatToken;
+        private String wechatAesKey;
         private String wecomCorpId;
         private String wecomCorpSecret;
     }
