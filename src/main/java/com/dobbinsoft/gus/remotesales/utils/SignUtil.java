@@ -81,4 +81,39 @@ public class SignUtil {
         return builder.toString();
     }
 
+    /**
+     * 验证微信回调签名
+     * 官方加密、校验流程：将token，timestamp，nonce这三个参数进行字典序排序，
+     * 然后将这三个参数字符串拼接成一个字符串进行sha1加密，
+     * 开发者获得加密后的字符串可以与signature对比，表示该请求来源于微信。
+     *
+     * @param signature 微信传递的签名
+     * @param timestamp 时间戳
+     * @param nonce     随机数
+     * @param token     微信配置的token
+     * @return 验证是否通过
+     */
+    public static boolean checkWechatSignature(String signature, String timestamp, String nonce, String token) {
+        if (StringUtils.isBlank(signature) || StringUtils.isBlank(timestamp) || 
+            StringUtils.isBlank(nonce) || StringUtils.isBlank(token)) {
+            return false;
+        }
+        
+        // 将token，timestamp，nonce这三个参数进行字典序排序
+        String[] tmpArr = {token, timestamp, nonce};
+        java.util.Arrays.sort(tmpArr);
+        
+        // 将三个参数字符串拼接成一个字符串
+        StringBuilder tmpStr = new StringBuilder();
+        for (String str : tmpArr) {
+            tmpStr.append(str);
+        }
+        
+        // 进行sha1加密
+        String encryptedStr = DigestUtils.sha1Hex(tmpStr.toString());
+        
+        // 与signature对比
+        return encryptedStr.equals(signature);
+    }
+
 }

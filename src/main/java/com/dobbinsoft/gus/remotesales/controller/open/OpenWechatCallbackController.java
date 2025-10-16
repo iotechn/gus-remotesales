@@ -3,8 +3,7 @@ package com.dobbinsoft.gus.remotesales.controller.open;
 import com.dobbinsoft.gus.common.utils.json.JsonUtil;
 import com.dobbinsoft.gus.remotesales.client.configcenter.ConfigCenterClient;
 import com.dobbinsoft.gus.remotesales.client.configcenter.vo.ConfigContentVO;
-import com.dobbinsoft.gus.remotesales.exception.AesException;
-import com.dobbinsoft.gus.remotesales.utils.wx.WXBizMsgCrypt;
+import com.dobbinsoft.gus.remotesales.utils.SignUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,13 +31,24 @@ public class OpenWechatCallbackController {
                            @RequestParam(value = "echostr", required = false) String echostr,
                             HttpServletRequest request) {
         log.info("[wechat callback] url validate: request_param: {}", JsonUtil.convertToString(request.getParameterMap()));
-        ConfigContentVO configContentVO = configCenterClient.getBrandAllConfigContent();
-        ConfigContentVO.Secret secret = configContentVO.getSecret();
+        
         try {
-            WXBizMsgCrypt wxBizMsgCrypt = new WXBizMsgCrypt(secret.getWechatToken(), secret.getWechatAesKey(), secret.getWechatAppId());
-            return wxBizMsgCrypt.verifyURL(signature, timestamp, nonce, echostr);
-        } catch (AesException e) {
-            return e.getMessage();
+            // 获取微信配置信息
+            ConfigContentVO configContentVO = configCenterClient.getBrandAllConfigContent();
+            ConfigContentVO.Secret secret = configContentVO.getSecret();
+            String wechatToken = secret.getWechatToken();
+            
+            // 验证签名
+            if (SignUtil.checkWechatSignature(signature, timestamp, nonce, wechatToken)) {
+                log.info("[wechat callback] signature verification passed, returning echostr: {}", echostr);
+                return echostr;
+            } else {
+                log.warn("[wechat callback] signature verification failed");
+                return "signature verification failed";
+            }
+        } catch (Exception e) {
+            log.error("[wechat callback] verification error", e);
+            return "verification error";
         }
     }
 
