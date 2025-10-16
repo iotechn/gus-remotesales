@@ -54,6 +54,9 @@ public class ConfigCenterClientImpl implements ConfigCenterClient {
     public ConfigContentVO getBrandAllConfigContent() {
         try {
             String tenantId = getTenantId();
+            if (tenantId == null) {
+                log.warn("getBrandAllConfigContent: tenantId is null");
+            }
             String cacheKey = buildCacheKey(tenantId);
             
             // 从Redis读取配置JSON字符串
