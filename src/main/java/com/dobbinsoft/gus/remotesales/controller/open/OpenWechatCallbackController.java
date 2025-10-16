@@ -27,10 +27,10 @@ public class OpenWechatCallbackController {
 
     @GetMapping
     @Operation(summary = "验证回调地址")
-    public String verifyUrl(@RequestParam("msg_signature") String msgSignature,
-                           @RequestParam("timestamp") String timestamp,
-                           @RequestParam("nonce") String nonce,
-                           @RequestParam("echostr") String echostr) {
+    public String verifyUrl(@RequestParam(value = "msg_signature", required = false) String msgSignature,
+                           @RequestParam(value = "timestamp", required = false) String timestamp,
+                           @RequestParam(value = "nonce", required = false) String nonce,
+                           @RequestParam(value = "echostr", required = false) String echostr) {
         log.info("[wechat callback] url validate: msg_signature: {}, timestamp: {}, nonce: {}, echostr: {}", msgSignature, timestamp, nonce, echostr);
         ConfigContentVO configContentVO = configCenterClient.getBrandAllConfigContent();
         String decodedEchostr = URLDecoder.decode(echostr, StandardCharsets.UTF_8);
